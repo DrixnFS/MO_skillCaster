@@ -57,9 +57,9 @@ class SkillSkiller:
         self.self_cast_key = 'e' # Key mapped to self cast skill
         self.cast_key = 'q' # Key mapped to cast skill on target
         self.sitdown_key = '#' # Key mapped to sitdown skill
-        self.mental_focus_current_skill = 61 # character current Mental Focus skill
-        self.mana_regen_skill = 100 #25-100% 1-100
-        self.meditation_skill = 54 # 1-100% 1-100
+        self.mental_focus_current_skill = 61 # Current Mental Focus skill level
+        self.mana_regen_skill = 100 # Current Mana Regeneration skill level
+        self.meditation_skill = 54 # Current meditation skill level
 
 
         # !!!! DO NOT EDIT ANYTHING UNDER THIS LINE IF YOU DO NOT PERFECTLY KNOW HOW EVERYTHING WORKS, ONLY CHANGE THE VARIABLES ABOVE TO ALTER THE BEHAVIOR !!! #
@@ -99,8 +99,10 @@ class SkillSkiller:
             self.__current_mana_regen = mana_regen_value
         if self.__current_mana + mana_regen_value <= self.total_mana:
             self.__current_mana += mana_regen_value
-            print('- Mana regen tick happened, regenerated ', mana_regen_value, ' mana');
-            print('-- Current mana after tick ', self.__current_mana);
+        else:
+            self.__current_mana += self.total_mana - self.__current_mana
+        print('- Mana regen tick happened, regenerated ', mana_regen_value, ' mana');
+        print('-- Current mana after tick ', self.__current_mana);
 
     def castSkills(self, bool_param = False, params = []):
         self.__current_mana = self.total_mana
