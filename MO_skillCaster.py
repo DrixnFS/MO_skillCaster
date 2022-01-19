@@ -1,5 +1,6 @@
-import time, threading, math;
-import pyautogui;
+import time, threading, math, os
+import pyautogui
+from pynput.keyboard import Key, Listener
 
 # JS-like setInterval function
 class setInterval:
@@ -73,11 +74,24 @@ class SkillSkiller:
         self.__current_mana_regen = 0
         self.__current_mana_regen_sitdown = 0
 
+        pb = threading.Thread(target=self.__panicButton)
+        pb.start()
+
         self.__setSkillsManaCost()
         print('!--- YOU HAVE 5 SECONDS TO ACTIVATE MORTAL ONLINE WINDOW ---!')
         time.sleep(5);
 
         self.castSkills();
+
+    def __panicButton(self):
+        def on_press(key):
+            if(key == Key.f5):
+                print('--Stopping the script based on user input--')
+                os._exit(0)
+
+        # Collect events until released
+        with Listener(on_press=on_press,) as listener:
+            listener.join()
 
     def __setSkillsManaCost(self):
         for skill in self.skills.keys():
